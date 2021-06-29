@@ -1,0 +1,58 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CreateCatDto {
+  id: ID!
+  name: String!
+  age: Int!
+}
+
+type Article {
+  id: ID!
+  title: String!
+  description: String!
+  body: String!
+}
+
+type PaginatedArticle {
+  totalCount: Int!
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  page: Int!
+  totalPages: Int!
+  nextPage: Int!
+  prevPage: Int!
+  results: [Article!]!
+}
+
+type Query {
+  hello: String!
+  cats: [CreateCatDto!]!
+
+  """get all articles"""
+  allArticles(pageInfo: PaginationArgs): PaginatedArticle!
+}
+
+input PaginationArgs {
+  page: Int!
+  pageSize: Int!
+}
+
+type Mutation {
+  createCat(input: CatInput!): CreateCatDto!
+
+  """create a new article"""
+  createArticle(input: CreateArticleInput!): Article!
+}
+
+input CatInput {
+  name: String!
+  age: Int!
+}
+
+input CreateArticleInput {
+  title: String!
+  description: String!
+  body: String!
+}
