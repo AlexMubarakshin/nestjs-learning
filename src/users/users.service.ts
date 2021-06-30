@@ -21,6 +21,8 @@ export class UsersService extends CrudService<User, CreateUserInput, unknown> {
 
     const user = new this.userModel(newUser);
 
+    await user.save();
+
     return user;
   }
 }

@@ -32,12 +32,26 @@ type User {
   email: String!
 }
 
+type PaginatedUser {
+  totalCount: Int!
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+  page: Int!
+  totalPages: Int!
+  nextPage: Int!
+  prevPage: Int!
+  results: [User!]!
+}
+
 type Query {
   hello: String!
   cats: [CreateCatDto!]!
 
   """get all articles"""
   allArticles(pageInfo: PaginationArgs): PaginatedArticle!
+
+  """get all users"""
+  allUsers(pageInfo: PaginationArgs): PaginatedUser!
 }
 
 input PaginationArgs {
