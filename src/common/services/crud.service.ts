@@ -11,6 +11,8 @@ import { Pagination } from '../pagination/pagination.type';
 
 import { BaseSchema } from '../base.schema';
 
+import { User } from 'src/users/schemas/users.schema';
+
 export type TDocument<T> = T & Document;
 export type TPaginatedDocument<T> = PaginateModel<TDocument<T>>;
 
@@ -21,6 +23,19 @@ export class CrudService<T extends BaseSchema, CreateDTO, UpdateDTO> {
 
   constructor(private readonly model: Model<TDocument<T>>) {
     this.paginatedModel = model as TPaginatedDocument<T>;
+  }
+
+  async createWithUser(
+    createDto: CreateDTO,
+    user: User,
+    userRef: string,
+  ): Promise<T> {
+    const createdObject = new this.model({
+      ...createDto,
+      [userRef]: user.id,
+    });
+
+    return createdObject.save();
   }
 
   async create(createDto: CreateDTO): Promise<T> {

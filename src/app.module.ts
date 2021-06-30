@@ -6,7 +6,6 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as mongoosePaginate from 'mongoose-paginate-v2';
 
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { CatsModule } from './cats/cats.module';
@@ -39,7 +38,6 @@ import { AuthModule } from './auth/auth.module';
     UsersModule,
     AuthModule,
   ],
-  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {

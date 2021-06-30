@@ -8,6 +8,12 @@ type CreateCatDto {
   age: Int!
 }
 
+type User {
+  id: ID!
+  username: String!
+  email: String!
+}
+
 type Article {
   id: ID!
   title: String!
@@ -26,15 +32,13 @@ type PaginatedArticle {
   results: [Article!]!
 }
 
-type User {
-  id: ID!
-  username: String!
-  email: String!
+type Success {
+  success: Boolean!
 }
 
 type JWTTokenResponseType {
-  token: String!
   success: Boolean!
+  token: String!
 }
 
 type PaginatedUser {
@@ -73,6 +77,9 @@ type Mutation {
   """create a new article"""
   createArticle(input: CreateArticleInput!): Article!
 
+  """delete an existing article"""
+  deleteArticle(input: ArticleIdInput!): Success!
+
   """create a new user"""
   createUser(input: CreateUserInput!): User!
 
@@ -89,6 +96,10 @@ input CreateArticleInput {
   title: String!
   description: String!
   body: String!
+}
+
+input ArticleIdInput {
+  articleId: String!
 }
 
 input CreateUserInput {

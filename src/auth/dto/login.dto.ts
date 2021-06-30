@@ -1,4 +1,5 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Success } from 'src/common/dto/success.type';
 
 @InputType()
 export class LoginInputType {
@@ -10,10 +11,7 @@ export class LoginInputType {
 }
 
 @ObjectType()
-export class JWTTokenResponseType {
+export class JWTTokenResponseType extends Success {
   @Field()
   token?: string;
-
-  @Field()
-  success: boolean;
 }
