@@ -9,12 +9,14 @@ import { ValidatePasswordPipe } from '../pipes/validate-password.pipe';
 import { PaginatedUser } from '../dto/user.type';
 import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { Pagination } from 'src/common/pagination/pagination.type';
+import { Public } from 'src/auth/decorators';
 
 @Resolver(() => User)
 export class UsersResolver {
   constructor(private readonly service: UsersService) {}
 
   @Mutation(() => User, { description: 'create a new user' })
+  @Public()
   async createUser(
     @Args('input', new ValidatePasswordPipe())
     createUserInputType: CreateUserInput,

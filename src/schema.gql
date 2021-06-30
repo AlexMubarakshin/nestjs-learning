@@ -32,6 +32,11 @@ type User {
   email: String!
 }
 
+type JWTTokenResponseType {
+  token: String!
+  success: Boolean!
+}
+
 type PaginatedUser {
   totalCount: Int!
   hasPreviousPage: Boolean!
@@ -52,6 +57,9 @@ type Query {
 
   """get all users"""
   allUsers(pageInfo: PaginationArgs): PaginatedUser!
+
+  """returns current logged in user"""
+  currentUser: User!
 }
 
 input PaginationArgs {
@@ -67,6 +75,9 @@ type Mutation {
 
   """create a new user"""
   createUser(input: CreateUserInput!): User!
+
+  """login using email/password to obtain a JWT token"""
+  login(input: LoginInputType!): JWTTokenResponseType!
 }
 
 input CatInput {
@@ -84,5 +95,10 @@ input CreateUserInput {
   username: String!
   email: String!
   confirmPassword: String!
+  password: String!
+}
+
+input LoginInputType {
+  email: String!
   password: String!
 }
