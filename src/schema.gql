@@ -26,6 +26,12 @@ type PaginatedArticle {
   results: [Article!]!
 }
 
+type User {
+  id: ID!
+  username: String!
+  email: String!
+}
+
 type Query {
   hello: String!
   cats: [CreateCatDto!]!
@@ -44,6 +50,9 @@ type Mutation {
 
   """create a new article"""
   createArticle(input: CreateArticleInput!): Article!
+
+  """create a new user"""
+  createUser(input: CreateUserInput!): User!
 }
 
 input CatInput {
@@ -55,4 +64,11 @@ input CreateArticleInput {
   title: String!
   description: String!
   body: String!
+}
+
+input CreateUserInput {
+  username: String!
+  email: String!
+  confirmPassword: String!
+  password: String!
 }
