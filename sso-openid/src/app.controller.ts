@@ -1,5 +1,6 @@
 import { Controller, Get, Request } from '@nestjs/common';
 import { AppService } from './app.service';
+import { User } from './common/user.decorator';
 
 @Controller()
 export class AppController {
@@ -11,7 +12,7 @@ export class AppController {
   }
 
   @Get('test')
-  getTest(@Request() req: Record<string, any>): string {
-    return req?.user;
+  getTest(@User() user): string {
+    return user;
   }
 }

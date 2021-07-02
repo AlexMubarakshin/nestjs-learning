@@ -1,8 +1,13 @@
-import { Controller, Get, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, UseGuards, UseInterceptors } from '@nestjs/common';
+import { User } from 'src/common/user.decorator';
+import { AuthService } from './auth.service';
+import { LoginInterceptor } from './login.interceptor';
 import { SSOAuthGuard } from './sso-guard.guard';
 
 @Controller('auth')
 export class AuthController {
+  constructor(private readonly authService: AuthService) {}
+
   @Get('login')
   @UseGuards(SSOAuthGuard)
   login() {
@@ -11,11 +16,8 @@ export class AuthController {
 
   @Get('callback')
   @UseGuards(SSOAuthGuard)
-  async callback(@Request() req: Record<string, any>) {
-    await new Promise<Error | void>((res, rej) => {
-      req.logIn(req.user, (err) => (err ? rej(err) : res()));
-    });
-    console.log('USER > ', req.user);
-    return req.user;
+  @UseInterceptors(LoginInterceptor)
+  async callback(@User() user) {
+    return user;
   }
 }
