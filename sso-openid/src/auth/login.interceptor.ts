@@ -4,8 +4,8 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
-
+import { from, Observable } from 'rxjs';
+import { flatMap } from 'rxjs/internal/operators';
 @Injectable()
 export class LoginInterceptor implements NestInterceptor {
   async intercept(
@@ -13,11 +13,10 @@ export class LoginInterceptor implements NestInterceptor {
     next: CallHandler,
   ): Promise<Observable<any>> {
     const req = context.switchToHttp().getRequest();
-
-    await new Promise<Error | void>((res, rej) => {
-      req.logIn(req.user, (err) => (err ? rej(err) : res()));
-    });
-
-    return next.handle();
+    return from(
+      new Promise<Error | void>((res, rej) =>
+        req.logIn(req.user, (err) => (err ? rej(err) : res())),
+      ),
+    ).pipe(flatMap(() => next.handle()));
   }
 }
