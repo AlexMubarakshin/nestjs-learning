@@ -1,14 +1,6 @@
-import {
-  Controller,
-  Get,
-  Request,
-  UseFilters,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Session, UseGuards } from '@nestjs/common';
 import { AppService } from './app.service';
 import { IsAuthorizedGuardGuard } from './common/is-authorized-guard.guard';
-import { UnauthorizedExceptionFilter } from './common/unauthorized-exception.filter';
-import { User } from './common/user.decorator';
 
 @Controller()
 export class AppController {
@@ -21,7 +13,7 @@ export class AppController {
 
   @Get('test')
   @UseGuards(IsAuthorizedGuardGuard)
-  getTest(@User() user): string {
-    return user;
+  getTest(@Session() session: Record<string, any>): string {
+    return session.user;
   }
 }

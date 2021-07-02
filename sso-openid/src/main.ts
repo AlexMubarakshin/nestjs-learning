@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import * as passport from 'passport';
 import * as session from 'express-session';
+import { AppModule } from './app.module';
 import { UnauthorizedExceptionFilter } from './common/unauthorized-exception.filter';
 
 async function bootstrap() {
@@ -14,8 +13,6 @@ async function bootstrap() {
       saveUninitialized: true,
     }),
   );
-  app.use(passport.initialize());
-  app.use(passport.session());
 
   app.useGlobalFilters(new UnauthorizedExceptionFilter());
 

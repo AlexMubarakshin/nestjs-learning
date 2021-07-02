@@ -5,6 +5,6 @@ export class IsAuthorizedGuardGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();
 
-    return req.user !== undefined;
+    return req.session.user !== undefined;
   }
 }

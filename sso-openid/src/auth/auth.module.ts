@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AuthSSOStrategy } from './auth-sso.strategy';
-import { CLIENT } from './auth.constants';
-import { Issuer } from 'openid-client';
-import { AuthController } from './auth.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { AuthService } from './auth.service';
+import { Issuer, Strategy } from 'openid-client';
+import * as passport from 'passport';
+
+import { CLIENT, PASSPORT } from './auth.constants';
+
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [ConfigModule],
   providers: [
-    AuthSSOStrategy,
     {
       provide: CLIENT,
       useFactory: async (configService: ConfigService) => {
@@ -28,7 +28,18 @@ import { AuthService } from './auth.service';
       },
       inject: [ConfigService],
     },
-    AuthService,
+    {
+      provide: PASSPORT,
+      useFactory: (client) => {
+        return passport.use(
+          'sso',
+          new Strategy({ client }, (tokenSet, userinfo, done) => {
+            return done(null, userinfo);
+          }),
+        );
+      },
+      inject: [CLIENT],
+    },
   ],
   controllers: [AuthController],
 })
