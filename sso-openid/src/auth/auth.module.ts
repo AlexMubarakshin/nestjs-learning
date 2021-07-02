@@ -13,11 +13,11 @@ import { AuthController } from './auth.controller';
     {
       provide: CLIENT,
       useFactory: async (configService: ConfigService) => {
-        const oneLoginIssuer = await Issuer.discover(
+        const loginIssuer = await Issuer.discover(
           configService.get<string>('AUTH_DISCOVER_URL'),
         );
 
-        return new oneLoginIssuer.Client({
+        return new loginIssuer.Client({
           client_id: configService.get<string>('CLIENT_ID'),
           client_secret: configService.get<string>('CLIENT_SECRET'),
           redirect_uris: [
@@ -31,12 +31,13 @@ import { AuthController } from './auth.controller';
     {
       provide: PASSPORT,
       useFactory: (client) => {
-        return passport.use(
+        passport.use(
           'sso',
           new Strategy({ client }, (tokenSet, userinfo, done) => {
             return done(null, userinfo);
           }),
         );
+        return passport;
       },
       inject: [CLIENT],
     },
